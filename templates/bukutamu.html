@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Buku Tamu Elegan</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Buku Tamu</h1>
+      <p class="subtitle">
+        Selamat datang! Silakan tinggalkan pesan atau kesan Anda.
+      </p>
+
+      <form id="guestbook-form" method="POST" action="">
+        <input type="text" id="nama" name="nama" placeholder="Nama Anda" />
+        <textarea
+          id="pesan"
+          name="pesan"
+          placeholder="Tulis pesan atau kesan..."
+        ></textarea>
+        <button type="submit">Kirim</button>
+        <p id="form-status" class="form-status"></p>
+      </form>
+
+      <h2>Pesan Pengunjung</h2>
+      {% if semua_pesan %} {% for pesan in semua_pesan | reverse %}
+      <div class="message-card">
+        <strong>{{ pesan.nama }}</strong>
+        <p>{{ pesan.pesan }}</p>
+      </div>
+      {% endfor %} {% else %}
+      <p class="empty">Belum ada pesan. Jadilah yang pertama!</p>
+      {% endif %}
+    </div>
+
+    <script>
+      const form = document.querySelector("#guestbook-form");
+      const status = document.querySelector("#form-status");
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const nama = document.querySelector("#nama").value.trim();
+        const pesan = document.querySelector("#pesan").value.trim();
+
+        if (!nama || !pesan) {
+          status.textContent = "Error: Nama dan pesan wajib diisi!";
+          status.style.color = "red";
+          return;
+        }
+
+        status.textContent = "Sukses! Pesan Anda akan dikirim.";
+        status.style.color = "green";
+
+        form.submit();
+      });
+    </script>
+  </body>
+</html>
